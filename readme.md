@@ -71,3 +71,41 @@ Jenkins will trigger automatically within 1 minute.
 - Build result: **SUCCESS**
 
 ---
+
+## Switching Between PASS and FAIL test cases
+
+Two Jenkinsfiles are available in the repo:
+
+| File | Test binary | Expected result |
+|---|---|---|
+| `Jenkinsfile` | `test_waypoints` (0.1m tolerance) | SUCCESS ✅ |
+| `Jenkinsfile_failcase` | `test_fail_waypoints` (0.01m tolerance) | FAILURE ❌ |
+
+### To demonstrate the FAIL case
+
+**Step 1 — Change Script Path in Jenkins GUI:**
+
+Jenkins → job → **Configure** → **Script Path** → change from `Jenkinsfile` to `Jenkinsfile_failcase` → Save
+
+**Step 2 — Trigger a build with a dummy commit on the PR branch:**
+
+```bash
+git checkout jenkins-trigger
+git commit --allow-empty -m "trigger fail case demo"
+git push
+```
+
+Jenkins triggers automatically → build will show **FAILURE** (robot cannot meet 0.01m tolerance).
+
+### To revert to PASS
+
+Jenkins → job → **Configure** → **Script Path** → change back to `Jenkinsfile` → Save
+
+Then push another dummy commit:
+
+```bash
+git commit --allow-empty -m "revert to pass case"
+git push
+```
+
+---
