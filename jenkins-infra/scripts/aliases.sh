@@ -4,10 +4,10 @@ export SMEE_URL="https://smee.io/WOi7gUgFDGQcVAQ"
 
 alias srcrc="source ~/.bashrc"
 alias fdir="cd ~/ros2_ws/src/ros2_ci"
+alias tdir="cd ~/simulation_ws/src/ros2_ci"
 
 # git
 cleanpull() {
-    cd ~/ros2_ws/src/ros2_ci
     git reset --hard HEAD
     git clean -fd
     git pull
@@ -17,11 +17,16 @@ dkradd() {
     newgrp docker
 }
 
-killcont() {
+killjenkins() {
     kill $(cat ~/webpage_ws/jenkins/jenkins.pid)
 }
 
-simbld() {
+tbld() {
+    cd  ~/simulation_ws/src/ros1_ci
+    docker build -t tortoisebot-noetic-gazebo:latest .
+}
+
+fbld() {
     cd  ~/ros2_ws/src/ros2_ci
     docker build -t fastbot-humble-gazebo:latest .
 }
@@ -35,11 +40,9 @@ frun() {
 }
 
 startjenkins() {
-    cd ~/ros2_ws/src/ros2_ci
     bash jenkins-infra/scripts/jenkins_bootstrap.sh
 }
 
 installplugins() {
-    cd ~/ros2_ws/src/ros2_ci
     bash jenkins-infra/scripts/install_plugins.sh
 }
